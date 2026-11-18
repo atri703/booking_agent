@@ -1,10 +1,10 @@
 # Validation record
 
-Local validation on 2026-11-18, Linux, Python 3.12.14, locked dependencies.
+Local validation on 2026-11-19, Linux, Python 3.12.14, locked dependencies.
 
 | Check | Observed result |
 |---|---|
-| pytest domain/API/session/SDK contracts | 61 passed |
+| pytest domain/API/session/SDK contracts | 61 passed, including protected A2A execution |
 | JSON and dormant SQLite parity | Included in pytest; CRUD, rollback, conflicts, ownership, expiry and retries passed |
 | Real ADK runner with scripted model | Tool execution and persistent session recovery passed |
 | A2A 1.0 discovery/SendMessage | Passed with scripted specialist |

@@ -59,6 +59,8 @@ def test_token_protects_crud_and_a2a(tmp_path):
     with TestClient(create_app(Settings(data_dir=tmp_path, api_token="secret"))) as client:
         for path in ["/api/bookings", "/.well-known/agent-card.json", "/api/sessions/x"]:
             assert client.get(path).status_code == 401
+        assert client.post("/", json={}).status_code == 401
+        assert client.get("/").status_code == 200
         assert (
             client.get("/api/bookings", headers={"Authorization": "Bearer secret"}).status_code
             == 200

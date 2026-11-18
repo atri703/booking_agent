@@ -63,7 +63,10 @@ def create_app(settings=None, model=None, clock=None):
 
     @app.middleware("http")
     async def local_auth(request: Request, call_next):
-        if settings.api_token and request.url.path not in ("/health", "/"):
+        public_request = request.url.path == "/health" or (
+            request.method == "GET" and request.url.path == "/"
+        )
+        if settings.api_token and not public_request:
             token = request.headers.get("authorization", "")
             if not secrets.compare_digest(token, "Bearer " + settings.api_token):
                 return JSONResponse({"detail": "Unauthorized"}, status_code=401)
