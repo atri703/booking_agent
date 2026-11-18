@@ -1,0 +1,8 @@
+metrics_to_run:
+  - multi_turn_task_success
+  - multi_turn_tool_use_quality
+  - multi_turn_trajectory_quality
+thresholds:
+  multi_turn_task_success: 0.9
+  multi_turn_tool_use_quality: 0.9
+  multi_turn_trajectory_quality: 0.9

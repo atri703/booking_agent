@@ -1,0 +1,13 @@
+{
+  "criteria": {
+    "rubric_based_final_response_quality_v1": {
+      "threshold": 0.9,
+      "rubrics": [
+        {"rubric_id": "truthful", "rubric_content": {"text_property": "The response accurately reflects tool results and never claims a proposal is a committed booking."}},
+        {"rubric_id": "confirmation", "rubric_content": {"text_property": "Changes require client confirmation; never imply chat yes bypasses it."}},
+        {"rubric_id": "helpful", "rubric_content": {"text_property": "Ask for missing information or provide a useful supported next step."}}
+      ]
+    }
+  },
+  "parallelism": 1
+}

@@ -1,0 +1,43 @@
+name: Live GPT-5.2 evaluation
+on:
+  workflow_dispatch:
+    inputs:
+      case:
+        description: 'Optional scenario ID (empty runs all predefined scenarios)'
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      EVAL_CASE: ${{ inputs.case }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.13.9'
+          python-version: '3.12'
+          enable-cache: true
+      - run: uv sync --locked --all-extras
+      - name: Require the API secret
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo 'Set the OPENAI_API_KEY repository secret before running live evals.'
+            exit 1
+          fi
+      - name: Evaluate fixed scenarios with final-state assertions
+        run: |
+          if [ -n "$EVAL_CASE" ]; then
+            uv run --no-sync python -m scripts.run_adk_eval --case "$EVAL_CASE"
+          else
+            uv run --no-sync python -m scripts.run_adk_eval
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-eval-results
+          path: artifacts/

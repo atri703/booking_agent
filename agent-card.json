@@ -1,0 +1,85 @@
+{
+  "name": "booking_agent",
+  "description": "Find and propose appointment changes",
+  "supportedInterfaces": [
+    {
+      "url": "http://127.0.0.1:8001",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "version": "0.0.1",
+  "capabilities": {
+    "streaming": true
+  },
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/plain"
+  ],
+  "skills": [
+    {
+      "id": "booking_agent",
+      "name": "model",
+      "description": "Find and propose appointment changes",
+      "tags": [
+        "llm"
+      ]
+    },
+    {
+      "id": "booking_agent-booking_policy",
+      "name": "booking_policy",
+      "description": "Get current date/time, business timezone, hours, services and confirmation rules.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "id": "booking_agent-find_available_slots",
+      "name": "find_available_slots",
+      "description": "Find slots for an ISO date (YYYY-MM-DD) in the business timezone.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "id": "booking_agent-list_my_bookings",
+      "name": "list_my_bookings",
+      "description": "Read the local demo user's bookings, including their IDs and versions.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "id": "booking_agent-propose_booking",
+      "name": "propose_booking",
+      "description": "Prepare a new appointment for human confirmation. start must include a UTC offset.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "id": "booking_agent-propose_reschedule",
+      "name": "propose_reschedule",
+      "description": "Prepare an update using the latest booking version, for human confirmation.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    },
+    {
+      "id": "booking_agent-propose_cancellation",
+      "name": "propose_cancellation",
+      "description": "Prepare deletion of a booking for human confirmation.",
+      "tags": [
+        "llm",
+        "tools"
+      ]
+    }
+  ]
+}

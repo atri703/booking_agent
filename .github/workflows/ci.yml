@@ -1,0 +1,49 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.13.9'
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+      - name: Install locked dependencies
+        run: uv sync --locked --all-extras
+      - name: Lint
+        run: uv run --no-sync ruff check booking_agent coordinator eval_agent scripts tests
+      - name: Format
+        run: uv run --no-sync ruff format --check booking_agent coordinator eval_agent scripts tests
+      - name: Tests and protocol contracts
+        run: uv run --no-sync python -m pytest -q --junitxml=artifacts/pytest.xml
+      - name: Offline CRUD demo
+        run: uv run --no-sync python -m scripts.demo_crud
+      - name: Exercise ADK Eval without a model key
+        run: uv run --no-sync python -m scripts.run_adk_eval --offline
+      - name: Check generated contracts are current
+        run: |
+          uv run --no-sync python -m scripts.build_eval_sets
+          uv run --no-sync python -m scripts.export_agent_card
+          git diff --exit-code -- tests/eval agent-card.json
+      - name: Build distribution
+        run: uv build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: artifacts/
