@@ -1,4 +1,4 @@
-"""ADK-discoverable booking agent using GPT-5.2 via LiteLLM."""
+"""ADK-discoverable booking agent using LiteLLM; GPT-5.2 remains the default."""
 
 from google.adk.agents import LlmAgent
 from google.adk.models.lite_llm import LiteLlm

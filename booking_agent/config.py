@@ -10,6 +10,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def model_api_key_name(model: str) -> str:
+    """Return the credential environment variable for a supported model identifier."""
+    return "OPENROUTER_API_KEY" if model.startswith("openrouter/") else "OPENAI_API_KEY"
+
+
 @dataclass(frozen=True)
 class Settings:
     data_dir: Path = Path("runtime")

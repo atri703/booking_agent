@@ -3,7 +3,7 @@
 <h1>Appointment booking</h1><p>Local demo · JSON storage · GPT-5.2 chat optional</p>
 <label>API token, if configured <input id="token" type="password"></label>
 <section><h2>Test without an API key</h2><label>Name <input id="name" value="Demo Customer"></label><label>Date <input type="date" id="day"></label><select id="duration"><option value="30">30 minutes</option><option value="60">60 minutes</option></select><button id="slots">Find available slots</button><select id="slot"></select><button id="prepare">Prepare booking</button><p id="zone"></p></section>
-<section><h2>Chat</h2><p>Requires OPENAI_API_KEY on the server. Session ID is saved in this browser.</p><div id="messages"></div><input id="message" placeholder="Book a consultation next Monday"><button id="send">Send</button><button id="new">New conversation</button></section>
+<section><h2>Chat</h2><p>Requires the API key for the configured model provider. Session ID is saved in this browser.</p><div id="messages"></div><input id="message" placeholder="Book a consultation next Monday"><button id="send">Send</button><button id="new">New conversation</button></section>
 <section><h2>Review proposed change</h2><pre id="proposal">No pending proposal.</pre><button id="confirm" disabled>Confirm this exact change</button></section>
 <section><h2>Your bookings</h2><button id="refresh">Refresh</button><div id="bookings"></div><p>To reschedule, select a new available slot above, then choose Reschedule beside a booking.</p></section><pre id="status" role="status"></pre>
 <script>

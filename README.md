@@ -1,6 +1,6 @@
 # ADK booking agent
 
-A clone-and-run appointment assistant using **Python ADK + OpenAI GPT-5.2**, real **A2A 1.0** communication, persistent JSON conversations, and **JSON-file CRUD**. A small browser UI and REST API work without any model key. A tested SQLite adapter is included as future database code but **is not connected to the application**.
+A clone-and-run appointment assistant using **Python ADK + OpenAI GPT-5.2 by default**, real **A2A 1.0** communication, persistent JSON conversations, and **JSON-file CRUD**. A small browser UI and REST API work without any model key. A tested SQLite adapter is included as future database code but **is not connected to the application**.
 
 ## Quick start
 
@@ -28,6 +28,19 @@ BOOKING_MODEL=openai/gpt-5.2
 ```
 
 Restart the server and use the Chat section. The key stays on the server. The browser saves a conversation ID; JSON session history survives refreshes and server restarts. The default business timezone is `Asia/Kolkata`, configurable with `BOOKING_TIMEZONE`.
+
+### Use OpenRouter for local chat
+
+The existing ADK `LiteLlm` integration also accepts OpenRouter model identifiers. In your local
+`.env`, leave `OPENAI_API_KEY` unset and configure:
+
+```dotenv
+OPENROUTER_API_KEY=<my key, set locally>
+BOOKING_MODEL=openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
+```
+
+Restart the server. Chat and the optional coordinator use the selected model; JSON CRUD still
+works without either provider key. Never commit `.env` or an API key.
 
 **Changes require the client's confirmation button or confirmation REST call.** Chat/A2A tools can prepare changes but cannot commit them. Saying “yes” in chat alone does not write data. This gives the user an exact, reviewable action and prevents model instructions from bypassing the write boundary.
 
@@ -66,13 +79,13 @@ A2A proposals include their ID and details. The consuming application should sho
 uv run --no-sync ruff check booking_agent coordinator eval_agent scripts tests
 uv run --no-sync python -m pytest -q
 uv run --no-sync python -m scripts.run_adk_eval --offline
-# Paid OpenAI calls; fixed clock and fresh storage per scenario:
+# Live provider calls; fixed clock and fresh storage per scenario:
 uv run --no-sync python -m scripts.run_adk_eval
 # Select a single scenario:
 uv run --no-sync python -m scripts.run_adk_eval --case create_30
 ```
 
-Offline tests execute real ADK tools, A2A requests, the coordinator-to-specialist connection, JSON session restoration, and the ADK evaluation engine with scripted models. They do **not** measure GPT-5.2 quality.
+Offline tests execute real ADK tools, A2A requests, the coordinator-to-specialist connection, JSON session restoration, and the ADK evaluation engine with scripted models. They do **not** measure live model quality.
 
 Google-backed rubric grading and automatically synthesized conversations additionally require Google authentication and service access:
 
@@ -87,7 +100,7 @@ See [EVALUATION.md](docs/EVALUATION.md) for exact credential requirements, metri
 
 [CI](.github/workflows/ci.yml) runs on every push and PR with Python 3.11 and 3.12: locked installation, lint, formatting, tests, offline CRUD, offline ADK Eval, generated contract checks, and package build. Ordinary CI needs no secrets.
 
-[Live evaluation](.github/workflows/live-eval.yml) runs only when manually triggered and requires the repository secret `OPENAI_API_KEY`. Its initial thresholds are acceptance targets, not measured model performance. Google-backed synthesis is run explicitly from the documented script so no Google billing happens during ordinary PR checks.
+[Live evaluation](.github/workflows/live-eval.yml) runs only when manually triggered and remains configured for the default OpenAI model and repository secret `OPENAI_API_KEY`. Local live evaluation may instead use the OpenRouter configuration above. Initial thresholds are acceptance targets, not measured model performance. Google-backed synthesis is run explicitly from the documented script so no Google billing happens during ordinary PR checks.
 
 ## Database code: included, disabled
 
@@ -98,6 +111,7 @@ See [EVALUATION.md](docs/EVALUATION.md) for exact credential requirements, metri
 | Variable | Default | Purpose |
 |---|---|---|
 | `OPENAI_API_KEY` | unset | Enables GPT-5.2 chat and live agent inference |
+| `OPENROUTER_API_KEY` | unset | Enables chat and live evaluation when `BOOKING_MODEL` starts with `openrouter/` |
 | `BOOKING_MODEL` | `openai/gpt-5.2` | ADK LiteLLM model identifier |
 | `BOOKING_DATA_DIR` | `runtime` | JSON data directory |
 | `BOOKING_TIMEZONE` | `Asia/Kolkata` | Business hours and displayed dates |
@@ -126,7 +140,7 @@ All clients use one `demo-user` identity. The optional bearer token restricts en
 
 - **No slots:** choose a future weekday within 90 days; the whole appointment must end by 17:00 in the configured timezone.
 - **409 conflict/stale/expired:** refresh the booking and generate a new proposal; do not retry with altered arguments under the old proposal ID.
-- **503 chat:** set `OPENAI_API_KEY`; offline CRUD remains available.
+- **503 chat:** set the API key named in the response (`OPENAI_API_KEY` by default or `OPENROUTER_API_KEY` for an `openrouter/` model); offline CRUD remains available.
 - **401:** configure the same `BOOKING_API_TOKEN` in the UI/client and server.
 - **A2A version error:** send the 1.0 header and payload shown in `scripts/a2a_client.py`.
 - **Corrupt JSON:** stop the server and restore a known backup. The application intentionally does not overwrite corrupted storage.

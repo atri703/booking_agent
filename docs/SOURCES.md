@@ -1,6 +1,6 @@
 # Sources and dependency compatibility
 
-Official documentation/source checked during implementation on 2026-11-18. Exact installed package APIs were inspected and exercised where tutorial examples differed.
+Official documentation/source checked during implementation on 2026-11-19. Exact installed package APIs were inspected and exercised where tutorial examples differed.
 
 | Component | Pinned version | Source |
 |---|---|---|
@@ -8,6 +8,8 @@ Official documentation/source checked during implementation on 2026-11-18. Exact
 | A2A Python SDK | 1.3.1 | https://github.com/a2aproject/a2a-python |
 | ADK A2A adapter | Included in ADK | https://adk.dev/a2a/quickstart-exposing/ |
 | ADK Python OpenAI integration | LiteLLM 1.109.1 | https://adk.dev/agents/models/openai/ |
+| LiteLLM OpenRouter integration | LiteLLM 1.109.1 | https://docs.litellm.ai/docs/providers/openrouter |
+| OpenRouter API/model identifiers | Hosted service | https://openrouter.ai/docs and https://openrouter.ai/models |
 | OpenAI model | gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2 |
 | ADK Eval | ADK eval extra | https://adk.dev/evaluate/ and https://adk.dev/evaluate/criteria/ |
 | Google Agents CLI | 1.15.0 | https://google.github.io/agents-cli/guide/evaluation/ |

@@ -18,7 +18,9 @@ FR-03: Reject past/out-of-hours/off-grid/unknown-resource/overlapping bookings; 
 FR-04: Recheck conflicts/version at commit; replay a successful confirmation without duplicate mutation.
 FR-05: Changed details supersede old proposals; pending proposals expire in ten minutes.
 FR-06: Persist ADK conversation events/state in JSON and reject stale session updates.
-FR-07: Main LLM is GPT-5.2 through OpenAI key and ADK LiteLLM.
+FR-07: Main LLM defaults to GPT-5.2 through OpenAI and ADK LiteLLM; operators may select
+an OpenRouter model with `BOOKING_MODEL` and its provider-specific API key without changing
+offline CRUD behavior.
 FR-08: Serve and validate A2A 1.0 Agent Card/RPC; include a remote coordinator/client.
 FR-09: Include model card, architecture, API, evaluation, future and coding-agent documentation.
 FR-10: Include at least 30 reviewed cases, ADK evaluation code and actual Agents CLI synthesis invocation.

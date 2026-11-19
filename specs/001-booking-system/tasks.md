@@ -6,6 +6,7 @@
 - [x] Implement availability, proposals, exact confirmation, CRUD and idempotence.
 - [x] Implement persistent JSON ADK sessions.
 - [x] Implement GPT-5.2 tools, A2A service and optional remote coordinator.
+- [x] Support OpenRouter model selection and provider-specific credentials for local chat and live evaluation without changing the GPT-5.2 default.
 - [x] Add offline browser test interface, REST docs and protocol client.
 - [x] Add 36 reviewed evaluation cases and schema exports.
 - [x] Add ADK Eval wrapper, offline smoke and real Agents CLI synthesis script.

@@ -18,7 +18,7 @@ from google.genai import types
 from pydantic import Field
 
 from booking_agent.agent import build_agent
-from booking_agent.config import Settings
+from booking_agent.config import Settings, model_api_key_name
 from booking_agent.models import Confirmation, ProposalRequest, StrictModel
 from booking_agent.service import BookingError, BookingService
 from booking_agent.sessions import JsonSessionService
@@ -131,8 +131,9 @@ def create_app(settings=None, model=None, clock=None):
 
     @app.post("/api/chat")
     async def chat(body: ChatRequest):
-        if model is None and not os.getenv("OPENAI_API_KEY"):
-            raise HTTPException(503, "Set OPENAI_API_KEY to use chat. JSON CRUD works without it.")
+        api_key_name = model_api_key_name(settings.model)
+        if model is None and not os.getenv(api_key_name):
+            raise HTTPException(503, f"Set {api_key_name} to use chat. JSON CRUD works without it.")
         session_id = body.session_id or str(uuid4())
         lock = locks.setdefault(session_id, asyncio.Lock())
         async with lock:

@@ -15,7 +15,7 @@ flowchart TD
     Specialist --> Sessions[JSON ADK sessions]
 ```
 
-`booking_agent/agent.py` builds the specialist with GPT-5.2 via `LiteLlm`. Tools are Python functions whose schemas are inferred by ADK. `coordinator/agent.py` wraps a `RemoteA2aAgent` in `AgentTool`; this is a real transport boundary, covered by an offline integration test.
+`booking_agent/agent.py` builds the specialist with GPT-5.2 by default via `LiteLlm`; `BOOKING_MODEL` may select an OpenRouter model with its provider key. Tools are Python functions whose schemas are inferred by ADK. `coordinator/agent.py` wraps a `RemoteA2aAgent` in `AgentTool`; this is a real transport boundary, covered by an offline integration test.
 
 `server.py` constructs exactly one domain service backed by JSON and shares it between REST and the specialist. A2A is mounted on the same application; its lifespan is explicitly entered so discovery/RPC routes initialize. The committed Agent Card is generated from the same agent definitions, never maintained as an incompatible handwritten schema.
 

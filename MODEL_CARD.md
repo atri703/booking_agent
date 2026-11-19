@@ -4,7 +4,7 @@ Version: 0.1.0 · Date: 2026-11-18 · Repository owner: atri703.
 
 ## System and models
 
-Appointment assistant implemented in Python Google ADK. The booking specialist and optional coordinator use OpenAI **gpt-5.2**, via LiteLLM identifier `openai/gpt-5.2`, authenticated with `OPENAI_API_KEY`. The model alias is configurable; no weights are trained or fine-tuned. There are no embeddings, vector database or retrieval corpus.
+Appointment assistant implemented in Python Google ADK. The booking specialist and optional coordinator use OpenAI **gpt-5.2** by default, via LiteLLM identifier `openai/gpt-5.2`, authenticated with `OPENAI_API_KEY`. Operators may select an OpenRouter identifier with `BOOKING_MODEL`, authenticated with `OPENROUTER_API_KEY`. No weights are trained or fine-tuned. There are no embeddings, vector database or retrieval corpus.
 
 Google-backed evaluation uses ADK/Agents CLI's separately configured judge and simulated-user models. They are not the main booking model. Actual judge/simulator IDs must be captured from executed runs; no Google model evaluation has been claimed from offline tests.
 
@@ -18,7 +18,7 @@ Not intended for public multi-tenant deployment, emergency/medical triage, payme
 
 All committed tests and examples are synthetic. `data/bookings.json` is an empty seed-format document. The 36 reviewed scenarios are hand-authored; they are regression tests, not a statistically representative benchmark or held-out evaluation population. No synthetic model-generated traces are represented as already generated.
 
-Live chat transmits messages and relevant tool data to OpenAI. Google simulation/judging processes evaluation inputs and traces through Google services. Local JSON stores can contain personal data; no application-level encryption or automatic retention/erasure is implemented. Cancellation deletes the active booking but retained proposals/session history may still contain its data.
+Live chat transmits messages and relevant tool data to OpenAI by default or to OpenRouter when selected. Google simulation/judging processes evaluation inputs and traces through Google services. Local JSON stores can contain personal data; no application-level encryption or automatic retention/erasure is implemented. Cancellation deletes the active booking but retained proposals/session history may still contain its data.
 
 ## Evaluation methodology
 
@@ -32,6 +32,7 @@ Live chat transmits messages and relevant tool data to OpenAI. Google simulation
 |---|---|
 | Offline deterministic/framework checks | See docs/VALIDATION.md for executed results |
 | GPT-5.2 live regression score | Not evaluated; no OpenAI key supplied |
+| OpenRouter live regression score | Partial only: synthetic connectivity succeeded and `create_30` passed 1/1 on 2026-11-19; full suite not evaluated |
 | Google synthetic conversations/grading | Not evaluated; Google credentials/project not supplied |
 | Real-world booking success/fairness | Not evaluated |
 | Latency/token usage/cost | Not benchmarked |

@@ -2,7 +2,7 @@
 
 This release is a **single-user local demo**, not a multi-tenant booking service. Bind to `127.0.0.1`. All transports act as `demo-user`; an optional `BOOKING_API_TOKEN` is a shared bearer credential, not an authenticated customer identity. Domain ownership checks alone do not make the server multi-user safe.
 
-The model receives prompts, tool arguments/results and conversation context through OpenAI. Google-backed evaluations send evaluation data to Google services. Use synthetic data when testing. JSON files and retained proposal/session history may contain names and appointment details and are not encrypted by the application. Protect the directory and do not commit it.
+The configured model provider receives prompts, tool arguments/results and conversation context through OpenAI by default or OpenRouter when selected. Google-backed evaluations send evaluation data to Google services. Use synthetic data when testing. JSON files and retained proposal/session history may contain names and appointment details and are not encrypted by the application. Protect the directory and do not commit it.
 
 LLM tools cannot call the confirmation service. Human-facing clients must render exact proposal details and obtain user approval before calling the confirmation endpoint. The application cannot prove a human physically clicked a button; authorization enforcement by trusted clients is part of the boundary. Do not give an untrusted agent arbitrary authenticated REST access.
 

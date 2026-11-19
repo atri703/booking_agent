@@ -9,13 +9,14 @@ import asyncio
 import json
 import os
 import tempfile
+from dataclasses import replace
 from datetime import UTC, datetime
 from pathlib import Path
 
 from google.adk.evaluation.agent_evaluator import AgentEvaluator
 
 from booking_agent.agent import build_agent
-from booking_agent.config import Settings
+from booking_agent.config import Settings, model_api_key_name
 from booking_agent.models import Booking
 from booking_agent.service import BookingService
 from booking_agent.storage.json_store import JsonStore
@@ -24,9 +25,16 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXED_NOW = datetime(2030, 1, 7, tzinfo=UTC)
 
 
+def require_live_model_credentials(settings: Settings) -> None:
+    api_key_name = model_api_key_name(settings.model)
+    if not os.getenv(api_key_name):
+        raise SystemExit(f"{api_key_name} is required for live ADK evaluation")
+
+
 async def evaluate(offline=False, judge=False, case_id=None):
-    if not offline and not os.getenv("OPENAI_API_KEY"):
-        raise SystemExit("OPENAI_API_KEY is required for live ADK evaluation")
+    base_settings = Settings.from_env()
+    if not offline:
+        require_live_model_credentials(base_settings)
     scenarios = json.loads((ROOT / "tests/eval/scenarios.json").read_text())
     dataset = json.loads((ROOT / "tests/eval/adk/booking.evalset.json").read_text())
     cases = {case["eval_id"]: case for case in dataset["eval_cases"]}
@@ -62,7 +70,7 @@ async def evaluate(offline=False, judge=False, case_id=None):
     for scenario in scenarios:
         with tempfile.TemporaryDirectory(prefix="booking-eval-") as directory:
             path = Path(directory)
-            settings = Settings(data_dir=path)
+            settings = replace(base_settings, data_dir=path)
             store = JsonStore(path / "bookings.json")
             service = BookingService(store, settings, clock=lambda: FIXED_NOW)
             if scenario["seed"]:
@@ -134,7 +142,7 @@ async def evaluate(offline=False, judge=False, case_id=None):
     report.write_text(
         json.dumps(
             {
-                "mode": "offline-scripted" if offline else "gpt-5.2",
+                "mode": "offline-scripted" if offline else base_settings.model,
                 "judge": judge,
                 "results": results,
             },

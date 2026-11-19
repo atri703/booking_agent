@@ -1,6 +1,6 @@
 # Technical plan
 
-Use Python 3.12 (supported 3.11–3.13), Google ADK 2.14.1, LiteLLM 1.109.1, a2a-sdk 1.3.1 and GPT-5.2. FastAPI hosts REST/chat and mounts the ADK A2A application with its startup lifecycle. One Uvicorn worker and local disk are the supported deployment profile.
+Use Python 3.12 (supported 3.11–3.13), Google ADK 2.14.1, LiteLLM 1.109.1, a2a-sdk 1.3.1 and GPT-5.2 by default. `BOOKING_MODEL` may select an OpenRouter model; local chat and live evaluation require the API key for the selected LiteLLM provider. FastAPI hosts REST/chat and mounts the ADK A2A application with its startup lifecycle. One Uvicorn worker and local disk are the supported deployment profile.
 
 BookingService owns all domain logic. JsonStore supplies lock-protected transactions and atomic replace. SQLiteStore provides the same interface for future adoption and parity tests only. JsonSessionService implements the ADK session interface with persistent events/scoped state and stale-write detection.
 
