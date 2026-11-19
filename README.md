@@ -44,6 +44,17 @@ works without either provider key. Never commit `.env` or an API key.
 
 **Changes require the client's confirmation button or confirmation REST call.** Chat/A2A tools can prepare changes but cannot commit them. Saying “yes” in chat alone does not write data. This gives the user an exact, reviewable action and prevents model instructions from bypassing the write boundary.
 
+### GCP deployment demonstration scaffold
+
+[`deployment/gcp/`](deployment/gcp/README.md) contains a future deployment scaffold for the
+ADK CLI's Agent Runtime/Agent Engine target and a private Cloud Run fallback for the external
+OpenRouter/NVIDIA model path. This is **demonstration-only packaging**: it has been inspected
+and tested locally, but no GCP credentials were available, none of its deployment commands
+were executed, and no code has been deployed to Google Cloud. The cloud JSON filesystem would
+be ephemeral and is not suitable for production persistence or multiple instances. Follow the
+folder's Secret Manager and IAM instructions only in a billed demo project, and do not make
+this single-user application public.
+
 ## Capabilities
 
 - Find available 30/60-minute appointments, weekdays 09:00–17:00, up to 90 days ahead.
