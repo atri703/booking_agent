@@ -12,7 +12,10 @@ Official documentation/source checked during implementation on 2026-11-19. Exact
 | OpenRouter API/model identifiers | Hosted service | https://openrouter.ai/docs and https://openrouter.ai/models |
 | OpenAI model | gpt-5.2 | https://developers.openai.com/api/docs/models/gpt-5.2 |
 | ADK Eval | ADK eval extra | https://adk.dev/evaluate/ and https://adk.dev/evaluate/criteria/ |
-| Google Agents CLI | 1.15.0 | https://google.github.io/agents-cli/guide/evaluation/ |
+| Google Agents CLI evaluation | 1.15.0 | https://google.github.io/agents-cli/guide/evaluation/ |
+| Google Agents CLI deployment | 1.15.0 | https://google.github.io/agents-cli/guide/deployment/ and https://google.github.io/agents-cli/cli/ |
+| Gemini Agent Runtime deployment | Hosted service | https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale/runtime/deploy-an-agent |
+| Cloud Run source deployment | Hosted service | https://docs.cloud.google.com/run/docs/deploying-source-code |
 | Synthetic generation | Same CLI | https://github.com/google/agents-cli/blob/main/skills/google-agents-cli-eval/references/user-simulation.md |
 | Dataset format | Google SDK schema | https://github.com/google/agents-cli/blob/main/skills/google-agents-cli-eval/references/dataset_schema.md |
 | Spec Kit | specify-cli 1.4.2 | https://github.com/github/spec-kit and https://github.github.io/spec-kit/installation.html |

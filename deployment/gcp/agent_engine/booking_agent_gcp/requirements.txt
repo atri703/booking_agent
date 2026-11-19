@@ -1,2 +1,0 @@
-google-cloud-agentplatform>=2.2,<3
-google-adk[a2a]==2.14.1
